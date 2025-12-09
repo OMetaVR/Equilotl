@@ -1,6 +1,8 @@
 # Equilotl
 
-The Equicord Installer allows you to install [Equicord, the cutest Discord Desktop client mod](https://github.com/Equicord/Equicord)
+The Equicord Installer fork that allows you to install [Equicord 2, the ugliest Discord Desktop client mod](https://github.com/OMetaVR/Equicord) (this is a purely personal project, don't bug anyone about issues.)
+
+This is not an official thing, the name is a joke, do not take this seriously like at all. I just heard that we like to fork, so I made a fork out of a fork, so I could fork plugins in my fork to customize everything fully to my forking liking.
 
 ![image](https://i.imgur.com/oHN41ss.png)
 
