@@ -60,6 +60,16 @@ jobs:
             Equilotl-x11
             EquilotlCli-linux
 
+      - name: Notify webhook (success)
+        if: success()
+        run: |
+          curl -H "Content-Type: application/json" -X POST -d '{"content":"✅ **Linux build succeeded** for `${{ github.ref_name }}`\nCommit: `${{ github.sha }}`\nWorkflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: Notify webhook (failure)
+        if: failure()
+        run: |
+          curl -H "Content-Type: application/json" -X POST -d '{"content":"❌ **Linux build failed** for `${{ github.ref_name }}`\n<@297075664530440192>\nCommit: `${{ github.sha }}`\nWorkflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' ${{ secrets.DISCORD_WEBHOOK }}
+
   build-mac:
     runs-on: macos-latest
 
@@ -114,6 +124,16 @@ jobs:
           name: Equilotl-macos
           path: |
             Equilotl.MacOS.zip
+
+      - name: Notify webhook (success)
+        if: success()
+        run: |
+          curl -H "Content-Type: application/json" -X POST -d '{"content":"✅ **macOS build succeeded** for `${{ github.ref_name }}`\nCommit: `${{ github.sha }}`\nWorkflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: Notify webhook (failure)
+        if: failure()
+        run: |
+          curl -H "Content-Type: application/json" -X POST -d '{"content":"❌ **macOS build failed** for `${{ github.ref_name }}`\n<@297075664530440192>\nCommit: `${{ github.sha }}`\nWorkflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' ${{ secrets.DISCORD_WEBHOOK }}
 
   build-windows:
     runs-on: windows-latest
@@ -177,6 +197,18 @@ jobs:
             Equilotl.exe
             EquilotlCli.exe
 
+      - name: Notify webhook (success)
+        if: success()
+        shell: msys2 {0}
+        run: |
+          curl -H "Content-Type: application/json" -X POST -d '{"content":"✅ **Windows build succeeded** for `${{ github.ref_name }}`\nCommit: `${{ github.sha }}`\nWorkflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: Notify webhook (failure)
+        if: failure()
+        shell: msys2 {0}
+        run: |
+          curl -H "Content-Type: application/json" -X POST -d '{"content":"❌ **Windows build failed** for `${{ github.ref_name }}`\n<@297075664530440192>\nCommit: `${{ github.sha }}`\nWorkflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' ${{ secrets.DISCORD_WEBHOOK }}
+
   release:
     runs-on: ubuntu-latest
     needs: [build-linux, build-mac, build-windows]
@@ -219,3 +251,13 @@ jobs:
             linux/EquilotlCli-linux
             macos/Equilotl.MacOS.zip
             windows/Equilotl*.exe
+
+      - name: Notify webhook (success)
+        if: success()
+        run: |
+          curl -H "Content-Type: application/json" -X POST -d '{"content":"🚀 **Release `${{ github.ref_name }}` published successfully!**\nRelease: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}"}' ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: Notify webhook (failure)
+        if: failure()
+        run: |
+          curl -H "Content-Type: application/json" -X POST -d '{"content":"❌ **Release failed** for `${{ github.ref_name }}`\n<@297075664530440192>\nWorkflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' ${{ secrets.DISCORD_WEBHOOK }}
